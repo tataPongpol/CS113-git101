@@ -1,0 +1,145 @@
+Linked Lists
+
+1. Linked List คืออะไร
+    คือ โครงสร้างข้อมูลที่ถูกออกแบบมาใช้เก็บข้อมูล โดยที่ข้อมูลแต่ละตัวเชี่อมโยงต่อกันเป็นสาย เพื่อให้สามารถเข้าถึงแต่ละตัวได้
+    (array และ linked list มีโครงสร้างและการจัดการการเก็บข้อมูลที่ไม่เหมือนกัน)
+
+2. Structure คร่าวๆ
+    Structure เป็นการกำหนดรูปแบบหรือโครงสร้างข้อมูลที่มีการรวบรวมตัวแปรที่เก็บข้อมูลหลายเรื่องที่สัมพันธ์กัน
+
+    ex. struct movies {
+        char name[99];
+        int total_ep[10];
+    }
+
+    1) การประกาศ
+        struct movie std;     // std เป็นตัวแปรที่มีโครงสร้างตาม struct ที่ชื่อ student
+        การเข้าถึงจะใช้ "."(dot op) or "->"
+
+        ex.
+        printf("%s\n", std.name);
+        // หรือ std -> name = ...
+    
+    2) การประกาศพร้อมกำหนดค่าเริ่มต้น
+        struct movie another_std = {"Conan", 999};
+    
+    3) pointer to structure
+        ex.
+        struct movie std, *p_std;
+        
+        p_std = &std;      // ชี้ไปที่ address ของ struct movie
+        printf("%s\n", (*p_std).name);
+
+    4) การใช้ typedef
+        ex. typedef unsigned long int ulint;
+
+        ตัวอย่างกรณีของ struct
+        typedef struct movies {
+            char name[99];
+            int total_ep[10];
+        } Movie;
+    
+    5) Self - Referential Structure
+        หลักการคือการที่เราสร้างด้วย struct และใน struct จะมีฟิลด์ที่เป็น pointer เพื่ออ้างกลับไปที่ struct อันนี้
+        ซึ่งเป็น struct ที่อ้างกลับไปที่โครงสร้างตัวมันเอง
+
+        ex. struct node {
+            int data;
+            struct node *next;
+        };
+
+        1 node ใช้เก็บข้อมูล 1 หน่วย !
+        จากตัวอย่าง struct node จะเก็บข้อมูล 2 ส่วนคือ ส่วนที่ใช้เก็บข้อมูล(data เก็บข้อมูล int)
+        อีกส่วนคือตัวแปร pointer ที่อ้างถึง node ถัดไปใน linked list (next ใช้เก็บตำแหน่งใน memory node ถัดไป)
+
+3. ตัวอย่าง linked list ที่มีข้อมูล
+    ex. 
+    |head|->|17|->|29|->|93|\| สามารถเขียน code ได้ดังนี้
+
+    struct node {
+        int data;
+        struct node *next;
+    };
+
+    int main() {
+        struct node *head = NULL;
+        struct node *first = NULL;
+        struct node *second = NULL;
+        struct node *third = NULL;
+
+        // Allocate 3 nodes in the loop
+        first = (struct node *)malloc(sizeof(struct node));
+        second = (struct node *)malloc(sizeof(struct node));
+        third = (struct node *)malloc(sizeof(struct node));
+
+        head = first;
+        first -> data = 17;
+        first -> next = second;
+
+        second -> data = 29;
+        second -> next = second;
+
+        third -> data = 93;
+        third -> next = NULL;
+    }
+
+4. การเข้าถึงข้อมูลแต่ละตัวใน linked list (Traversal) 
+    struct node {
+        int data;
+        struct node *next;
+    };
+
+    struct node *create_list() {   
+        struct node *first, *second, *third;
+        first = (struct node *)malloc(sizeof(struct node));
+        second = (struct node *)malloc(sizeof(struct node));
+        third = (struct node *)malloc(sizeof(struct node));
+    
+        first->data = 17;
+        first->next = second;
+
+        second->data = 29;
+        second->next = third;
+
+        third->data = 93;
+        third->next = NULL;
+
+        return first;
+    }
+    
+    void print_list(struct node *head) { 
+        struct node *tmp;
+
+        for (tmp=head; tmp; tmp = tmp->next)
+            printf("%d\n", tmp->data);
+    }
+    
+    int main() { 
+        struct node *head;
+
+        head = create_list();
+        print_list(head);
+    }
+    จากตัวอย่าง code เป็นการกำหนดค่าให้ข้อมูลแต่ละตัวใน link linked 
+
+5. การลบข้อมูลออกจาก linked list (Deletion) 
+    การลบข้อมูลออกจาก Linked list ทางด้านหน้านั้น ทำได้ง่ายกว่าทางด้านหลัง เราเพียงแค่ย้าย
+    head ให้ชี้ไปยัง node ถัดไป แต่การลบออกจากทางด้านหลังนั้น เราต้องค้นหา node ที่อยู่ก่อน tail ให้
+    เจอเพื่อที่จะย้ายตัวเชื่อมจาก node นี้ไปยัง NULL ซึ่งก็หมายถึงการเดินเข้าหาทุก node ที่มีอยู่ใน list
+
+
+6. การเพิ่มข้อมูลเข้าไปใน linked list (Insertion)
+    ในการนำข้อมูลเข้าสู่ linked list นั้น เรามักจะนำเข้าทางด้านหลัง (node ที่ tail ชี้อยู่) 
+    เริ่มด้วยการสร้าง node ใหม่สำหรับข้อมูลที่ต้องนำเข้าพร้อมกับตรวจสอบ list มีข้อมูลหรือไม่ 
+    ถ้า list ไม่มีข้อมูลเลยก็ย้าย head และ tail ไปที่ node ใหม่นี้
+    แต่ถ้า list มีข้อมูลอยู่ให้ย้ายตัวเชื่อมจาก node tail ไปยัง node ใหม่ที่สร้างขึ้น 
+    พร้อมกับย้าย tail มาชี้ที่ node ใหม่
+
+7. Doubly Linked List
+    ลักษณะของ linked list ที่เห็นผ่านมาเรียกว่า Singly Linked List โดยแต่ละ node เชี่อมต่อกันผ่าน link เดียว
+    ส่วน doubly จะเป็น node แต่ละ node เชี่อมกันด้วย link 2 link โดยอันนึงเชี่อม node ถัดไปอีกอันเชี่อม node ก่อนหน้า
+    
+8. Circular Linked List
+    เป็นโครงสร้างที่แตกต่างจาก Single Linked List ที่โครงสร้าง แบบนี้ไม่มี Null Link เป็นอีกรูปแบบที่กำหนดทิศทางของ pointer
+    ชี้ไปในทิศทางเดียวกัน แต่ใน node สุดท้ายจะกำหนด pointer ใช้ชี้กลับมายัง node เริ่มต้นอีกครั้งเพื่อที่จะได้สามารถ
+    เข้าสู่ node ใดก็ได้โดยที่ไม่ต้องเริ่มการเข้าจาก node ต้น list
