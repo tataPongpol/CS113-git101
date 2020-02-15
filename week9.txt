@@ -1,0 +1,34 @@
+Git Branch Merge Conflict
+
+การสร้าง/แยก Branch
+    คำสั่งสร้าง Branch ใหม่ 
+        git branch <ชื่อ>
+
+ตรวจสอบ Branch ที่มีอยู่
+    git branch
+    จะมี * อยู่หน้าชื่อ Branch ที่เรากำลังทำงานอยู่
+
+เปลี่ยนจาก Branch หนึ่งไปยังอีก Branch หนึ่ง
+    git checkout <ชื่อ>
+
+การ Merge Branch (No Conflict)
+    git merge <ชื่อ Branch>
+    * ไม่ต้อง commit การ merge
+
+การ Pull Branch (No Conflict)
+    git pull origin <ชื่อ Branch>    // เป็นการดึงความเปลี่ยนแปลงจาก Branch นั้นๆ
+
+การ Merge Branch (Conflict)
+    git merge <ชื่อ Branch>
+    แต่หลังจากใช้คำสั่งนี้จะ merge ไม่ได้ มีข้อความบอกว่ามี Conflict เกิดขึ้น
+
+    ในบาง editor จะมีตัวช่วยจัดการ Conflict ว่าจะเอาข้อมูลจาก Branch ไหน
+    หากไม่มีต้องแก้ไขเองให้ไม่ Conflict
+
+    หลังแก้ไขต้อง commit การ merge ด้วยแล้วจึง push ตามปกติ
+
+การ Pull Branch (Conflict)
+    git pull origin <ชื่อ Branch>
+    แต่หลังจากใช้คำสั่งนี้จะ merge ไม่ได้ มีข้อความบอกว่ามี Conflict เกิดขึ้น
+
+    ทำการแก้ไขด้วยลักษณะเดียวกับ Conflict ของการ Merge Branch
