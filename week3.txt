@@ -1,0 +1,75 @@
+Control Flow
+
+1. Statements and Blocks
+    expression จะเป็น statements เมื่อถูกปิดท้ายด้วย semi-colon ;
+        ex. x = 0;
+    
+    {} (ปีกกา) 
+        ใช้รวมส่วนของ declarations and statements เข้าด้วยกันเป็น block
+        * function, if, else, while, for มักใช้ block ในการรวม statements 
+        
+    Null statement คือ statement ที่ปราศจากส่วน expression (มีแค่เครื่องหมาย ;)
+
+2. If-Else
+    ex.
+    if (expression)
+        statement1
+    else
+        statement2
+
+    * else จะคู่กับ if ที่ใกล้ที่สุด
+
+3. Else-If
+    ex.
+    if (expression1)
+        statement1
+    else if (expression2)
+        statement2
+    else if (expression3)
+        statement3
+    else if (expression4)
+        statement4
+    else
+        statement5
+
+4. Switch
+    ใช้ตรวจสอบ condition ที่ดูว่า match กับค่าคงที่ตัวใด หลังจากนั้นโปรแกรมจะกระโดดมาทำงาน
+    statement ภายใต้ค่าคงที่นั้นลงมาเรื่อยๆ จนเจอ break จึงหลุดออกจากโปรแกรม
+
+    ex.
+    switch (expression) {
+        case const-expr:
+            statements
+        case const-expr:
+            statements
+        default:
+            statements
+    }
+
+    * default เป็น optional มีหรือไม่ก็ได้ จะทำงานเมื่อ expression ไม่ match กับ case ใดเลย
+
+5. Loop - While and For
+    While
+        ex.
+        While (expression)
+            statement
+        * จะทำงานเมื่อ expression เป็นจริงและวนซ้ำจนกว่า expression จะเป็นเท็จ
+
+    For
+        ex.
+        for (expr1 ; expr2 ; expr3)
+            statement
+
+6. Loop - Do-While
+    do-while ต่างจาก while, for ตรงการทดสอบเงี่อนไขจะอยู่ด้านล่าง loop
+    
+    ex.
+    do {
+        statement
+    } while (expression);
+
+    * statement จะถูกทำงานก่อนตรวจสอบเงี่อนไข แล้ว expression จะตรวจสอบว่าเป็นจริงหรือไม่ถ้าจริงก็จะวนจนกว่าจะเท็จ
+
+7. Break and Continue
+    break จะทำให้โปรแกรมหลุดจาก loop
+    continue จะทำการบังคับให้ loop เกิดการวนซ้ำขึ้นใหม่
