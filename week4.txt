@@ -1,0 +1,80 @@
+Functions and Program Structure EP.1
+
+1. Function Definition (การนิยามฟังก์ชัน)
+    รูปแบบ
+    return-value-type   function-name (parameter-list)
+    {
+        declarations
+
+        statement
+        statement
+        .
+        .
+    }
+
+2. Function Prototypes
+    มีลักษณะเหมือน function header ของ function definition
+    ex. int isEven(int);
+    * สามารถละ"ชื่อ"ตัวแปรได้
+
+3. Function Call - Call by Value
+    การเรียกใช้ function สามารถส่งค่าผ่านข้อมูลจากผู้เรียกไปยัง function ที่ถูกเรียกใช้ได้
+    ซึ่งการส่งผ่านค่าข้อมูลจากผู้เรียกไปยัง function มีลักษณะที่เรียกว่า pass by value
+    การส่งผ่านแบบ by value function ที่ถูกเรียกใช้จะเก็บค่าในตัวแปรชั่วคราว
+    การส่งผ่านค่าเป็นเพียงการส่งค่าข้อมูลผู้เรียก (ไม่ได้เป็นการส่งตัวแปรต้นฉบับที่มาจากผู้เรียกเข้ามาโดยตรง
+    ซึ่งการส่งผ่านตัวแปรเป็นการส่งอีกแบบเรียกว่า pass by reference)
+
+4. Standard Library Functions and Math Library Functions
+    Standard Library
+        ex. function printf, scanf and getchar
+
+    Math Library
+        ex. function sqrt, exp and log
+    
+    * เมื่อโปรแกรมมีการใช้ function พวกนี้เวลาคอมไพล์จะต้องคอมไพล์โปรแกรมเรารวมเข้ากับโค้ด binary ของ function พวกนี้
+
+    * ปกติ gcc จะ link function ใน Standard Library อัตโนมัติ
+
+    เพิ่มเติม :
+
+    NULL
+        เป็น symbolic constant ที่ถูกกำหนดค่าไว้ใน /usr/include/stdio.h
+        ในไฟล์ระบุว่า #define NULL 0
+
+5. Return Values
+    function จะมีการส่งค่ากลับ หรือไม่ก็เป็น function ที่ return type void
+    ใช้ void เพื่อบอก complier ว่า function นี้ไม่มีการส่งค่าใดๆ
+    ซึ่งหากมีการส่งค่ากลับจะใช้ return ในการส่งค่าข้อมูล
+
+6. Using Functions as Parameters to Functions
+    ค่าที่ได้จากการเรียกใช้ function สามารถส่งผ่านไปเป็น parameter ของการเรียกใช้อีก function ได้
+
+7. Recursion (การเรียกซ้ำ)
+    เป็น function ที่เรียกตัวเอง ส่วนใหญ่อยู่ในรูป direct and indirect
+    ซึ่งสิ่งที่ควรรู้คือ เมื่อ function ถูกเรียกใช้ โปรแกรมจะสำเนาค่าตัวแปรต่างๆขึ้นมาอีกชุด
+
+    * Local and Global Variables
+
+        Local Variables
+            ตัวแปรที่ถูกประกาศภายใน block, ภายใน function รวมถึงตัวแปร parameter function
+            ตัวแปรดังกล่าวจะถูกใช้งานได้เพียงภายใน function ที่ถูกประกาศไว้
+        
+        Global Variables
+            ตัวแปรที่ถูกประกาศไว้ภายนอก function
+
+8. Function Call and Stack Frames
+    เพื่อให้โปรแกรมสามารถเก็บตัวแปรจำนวนมากในขณะที่โปรแกรมทำงานได้ function จะจัดทำ stack frame เพื่อเก็บข้อมูล
+    ตัวแปร parameter and ตัวแปร locl ใน function
+
+    เมื่อ function ถูกเรียกใช้งาน stack frame จะถูกสร้างขึ้น (1 stack frame / using function 1 time)
+
+    return address เป็นตำแหน่งของคำสั่งที่จะถูกทำงานหลังจากที่ฟังก์ชันที่ถูกเรียกทำงานเสร็จ
+    เมื่อทำงานเสร็จ stack frame จะถูกทำลาย โดยลำดับการทำงาน program จะกลับไปยังตำแหน่ง return address
+
+    ส่วนประกอบ Stack Frames
+         _____________________________________
+        |                    |                |
+        |     stackframe     | return address |
+        |         or         |----------------|
+        | activation record  | local variable |
+        |____________________|________________|
