@@ -1,0 +1,74 @@
+Functions and Program Structure EP.2
+
+1. Scope Rules (ขอบเขตและช่วงชีวิตของตัวแปร)
+    ในบางบริเวณโปรแกรม ตัวแปรที่ถูกกำหนดขึ้นในบริเวณอาจถูกเข้าถึงได้ 
+    และจะไม่สามารถเข้าถึงได้ต่อไปเมื่อออกจากบริเวณนั้นๆ
+
+    1) Local Variables
+        ตัวแปรที่ประกาศใน block or in function รวมถึง parameter f.
+        ซึ่งจะถูกเรียกใช้งานเพียงใน function ที่ถูกประกาศไว้เท่านั้น
+
+    2) Global Variables
+        ตัวแปรที่ถูกประกาศนอก function ซึ่งถูกเข้าถึงได้จากทุก function
+        และหากมีชื่อซ้ำกับตัวแปร local การแก้ค่าของตัวแปรไม่มีผลต่อตัวแปร global
+
+    3) Storage Classes
+        มี 4 ลักษณะ : auto, register, extern and static 
+        ใช้ในการช่วยกำหนดช่วงชีวิตของการเก็บข้อมูลนั้นๆ ใน memory
+
+        1) automatic storage duration
+            auto, register ใช้กำหนดตัวแปรประเภทนี้ จะถูกกำหนดขึ้นใน memory
+            เมื่อโปรแกรมเข้าไปทำงานใน block และเมื่อออกจาก block ตัวแปรเหล่านี้จะไม่อยู่ใน memory  
+
+            local variables ก็เป็นตัวแปรที่อยู่ในนี้
+
+            register เป็นการแจ้งให้ complier ทราบว่าเราต้องการเก็บค่าตัวแปรนี้ไว้ใน register เพื่อ
+            ความเร็วในการเข้าถึงตัวแปร ซึ่งหากระบบมี register เหลือ complier จะจัดสรรให้โปรแกรมใช้งาน
+
+        2) static storage duration
+            extern, static ใช้กำหนดตัวแปรประเภทนี้ ซึ่งตัวแปรพวกนี้จะถูกกำหนดใน memory ตั้งแต่เริ่มทำงาน
+            และอยู่ใน memory จนโปรแกรมสิ้นสุดการทำงาน
+
+            global variables and function name are assigned extern by default.
+
+            หาก local variables ถูกประกาศโดย keyword static ตัวแปรนั้นจะถูกเข้าถึงได้ภายใน function
+            เท่านั้น แต่ตัวแปรจะคงค่าอยู่ใน memory แม้จะการทำงานโปรแกรมจะออกจาก function ไปแล้ว
+    
+    4) Dynamic Storage Duration
+        พิ้นที่เก็บข้อมูล สำหรับ dynamic storage duration สามารถถูก allocate ขึ้นได้ตามความต้องการของโปรแกรม
+        ขณะที่โปรแกรมกำลังทำงาน
+
+2. Separate Complilation (การคอมไพล์แยกส่วน)
+    ส่วนของการนิยาม function และการเรียกใช้ไม่จำเป็นต้องถูกคอมไพล์ในเวลาเดียวกันและแยกไฟล์ได้
+    รวมถึง global variables และการเข้าถึงค่าตัวแปรนั้นด้วย
+
+    How to :
+        $ gcc -c main.c                   // คำสั่งนี้จะสร้าง main.o
+        $ gcc -c func.c                   // คำสั่งนี้จะสร้าง func.o
+        $ gcc main.o func.o -o main.exe   // คำสั่งนี้จะ link main.o and func.o เข้าด้วยกัน
+
+3. การใช้ make
+    File Makefile จะบรรจุกฎต่างๆ ในการสร้าง (object or executable file)
+
+    การสร้างกฎ
+        target : dependency
+        -->tab-->คำสั่งที่ใช้สร้าง target
+
+4. การสร้าง Static Library
+    gcc -c func.c 
+    ar cr libfunc.a func.o 
+
+5. การสร้าง Shared (Dynamic) Library
+    Windows : gcc -shared -o libfunc.dll -Wl,--out-implib,libfunc.dll.a *.o
+    MacOSX  : gcc -shared -o libfunc.dylib *.o 
+    Linux   : gcc -shared -o libfunc.so *.o 
+
+6. การเรียกใช้งาน function ใน Shared Library C language form Python
+    from ctypes import cdll
+    c_lib = cdll.LoadLibrary("libfunc.dll")
+    c_lib.c_function(123)
+
+7. Random Number Generator
+    rand() if function in C Standard Library ใช้สร้างเลขจำนวนเต็มที่สุ่ม ซึ่งการเรียกใช้หลายๆครั้งจะได้ค่าที่ต่างกัน
+    ในการรันโปรแกรมชุดเลขสุ่มจะเหมือนกันหากต้องการให้ต่าง ให้ใช้ srand() 1 ครั้งเพื่อกำหนดค่า seed ให้กับ
+    Random Number Generator ก่อนจะเรียกใช้ rand() ต่อไป
