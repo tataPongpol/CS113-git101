@@ -1,0 +1,138 @@
+Pointers and Dynamic Memory Allocation
+
+1. Pointers and Addresses
+    การใช้ pointer สามารถเข้าถึงและจัดการ memory ได้โดยตรง 
+    ซึ่ง pointer เป็นตัวแปรที่เก็บค่า "address" ใน memory
+
+    ex.
+    การเขียน code ที่จะให้ตัวแปร pointer p อ้างถึงตำแหน่งหรือ address ที่เก็บค่าตัวแปร c
+    สามารถเขียนได้ดังนี้
+
+    int c;
+    int *p;
+
+    p = &c;
+
+2. Pointer Operators
+    & (address operator) เป็น unary operator ที่ต้องการ 1 operand
+        เป็น operator ที่ใช้หาค่าตำแหน่งใน memory ของ operand
+
+        ex. p = &c;     // เป็นการกำหนดค่าให้ตัวแปร p มีค่าเท่ากับ address ตัวแปร c
+
+    * (dereferencing operator or indirection operator) เป็น unary operator
+        เป็น operator ที่ถูกใช้ในการเข้าถึงข้อมูลที่ถูกอ้างอิงโดยค่าตำแหน่งในหน่วยความจำที่มีค่าเป็น operand
+
+        ex. *p = 10;
+
+3. Pointers กับ Array
+    ex.
+    int a[10];
+            __________________________________________________________
+        a: |____|_____|_____|_____|_____|_____|_____|_____|_____|_____|
+            a[0]  a[1]                                            a[9]
+
+    a[i] อ้างอิงขึ้นข้อมูลตัวที่ i ใน array a โดยข้อมูลตัวแรกคือ a[0] และตัวสุดท้ายคือ a[9]
+    ชื่อตัวแปร array เป็นนิพจน์ที่บอกถึงค่า base address array ดังนั้น a จะให้ค่าตำแหน่งใน memory ที่เก็บข้อมูลตัวแรกใน array
+
+    a = &a[0] , *( a + i ) = a[i]
+
+4. การจำลองการเรียก function แบบ Call by Reference
+    ex.
+
+    void multiple (int *val) {
+        *val = (*val) * (*val);
+    }
+
+    int main() {
+        int a = 3;
+
+        multiple(&a);
+        printf("%d", a);
+    }
+
+5. การใช้ const กับ pointers
+    ex.
+
+    int f1(const int *arr, const int len) {
+        int i, sum;
+
+        for (i = sum  = 0 ; i < len ; i++) {
+            sum += arr[i];
+        }
+
+        return sum;
+    }
+
+    int main() {
+        int data[] = {0, 1, 2, 3, 4, 5, 6, 7, 8, 9};
+        int n = 10, sum;
+
+        sum = f1(data, n);
+        printf("%d\n", sum);
+        printf("%d", data[7]);
+    }
+
+6. นิพจน์ใน pointer และการใช้ตัวดำเนินการคณิตศาสตร์กับ pointer
+    นิพจน์ที่ตัวแปร pointer สามารถเป็น operand ให้ได้ ได้แก่
+        นิพจน์ทางคณิตศาสตร์, นิพจน์ในการกำหนดค่า, นิพจน์ในการเปรียบเทียบ
+        * ไม่ใช่ทุกตัวดำเนินการที่นิพจน์เหล่านี้จะใช้ร่วมกับ pointer ได้ทั้งหมด
+
+    ความหมายของนิพจน์ที่มีตัว pointer กับตัวดำเนินการคณิตศาสตร์
+    ex.
+    float f[4] = {0.0, 1.0, 2.0, 3.0};
+    float *pf;
+
+    pf = &f[0];
+    pf = pf + 2;    // หมายถึงเพิ่มให้ค่า pf ขึ้นไปจำนวน 2 เท่าของขนาดประเภทข้อมูลที่ pf อ้างถึง
+    
+    (float ขนาด 4 byte ดังนั้น 2*4 = 8 , pf จะเพิ่มค่าขึ้นไป 8 หน่วย)
+
+7. การใช้ pointer อ้างไปที่ฟังก์ชัน (Pointers to Functions)
+    เราสามารถใช้ตัวแปร pointer อ้างไปถึงตำแหน่งในหน่วยความจำ (base address) ของ function 
+    ที่ต้องการได้ โดยปกติชื่อ function เป็นนิพจน์ที่ให้ค่า base address ของ function
+
+    ตัวอย่างการใช้งาน
+
+    void action (double (*pfunc)(int, float), int x, float y) {
+        printf("Return %lf\n", (*pfunc)(x,y));
+    }
+
+    double f1(int x, float y) {
+        return x + y;
+    }
+
+    double f2(int x, float y) {
+        return x * y;
+    }
+
+    int main() {
+        action(f1, 3, 2.5);
+        action(f2, 3, 2.5);
+    }
+
+8.การจองหน่วยความจำ (Dynamic Memory Allocation)
+    เราสามารถใช้ function malloc() and free() เพื่อจองและคืนพิ้นที่ในหน่วยความจำได้
+    (หน่วยความจำที่ถูกจองด้วย malloc()จะเก็บในหน่วยความจำที่เป็นส่วนของ Heap segment)
+
+    การใช้ malloc()
+
+        int *data;
+
+        data = (int *)malloc(1000 * sizeof(int));
+
+        parameter ของ malloc() จะเป็นจำนวน byte ที่ใช้ในการจองพิ้นที่ ซึ่งจะส่งประเภทข้อมูลกลับเป็น (void *)
+    
+    การใช้ free()
+
+        free(data);
+
+        parameter ของ free() จะเป็นตำแหน่งในหน่วยความจำ (base address) ที่ต้องการคืนพิ้นที่ให้กับระบบ
+
+9. Complicated Declarations
+    int *f1();        // เป็นการประกาศ function f1 ที่ส่งค่าไปยัง int กลับ
+    int (*f2)();      // เป็นการประกาศตัวแปร pointer f2 ที่สามารถเก็บค่าตำแหน่งของ function ที่ส่งค่า int กลับ
+    int *daytab[13];  // เป็นการประกาศตัวแปร array ที่เก็บ pointer ไปยัง int
+
+10. Segmentation fault (core dumped)
+    หากเราพยายามเข้าถึงหน่วยความจำที่เราไม่ได้จองไว้ มีโอกาสสูงที่จะถูกระบบปฎิบัติการหยุดการทำงานของโปรแกรม
+    โดยระบบมักแสดงข้อความว่า Segmentation fault ออกมาบนหน้าจอ
