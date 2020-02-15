@@ -1,0 +1,217 @@
+Types, Operators, and Expressions
+
+1. การใช้งานตัวแปร
+
+    ตัวแปรจะต้องประกาศก่อนถึงจะนำไปใช้งานได้
+
+    ตัวอย่างการประกาศตัวแปร :
+    int x;
+    int y = 10;
+
+    1) ชื่อตัวแปร (Variable Names)
+
+        สามารถประกอบด้วยอักขระและตัวเลข แต่ต้องขึ้นด้วยอักขระเท่านั้น
+        ( รวมถึง "_"(underscore) )
+        * ตัวพิมพ์ใหญ่และตัวพิมพ์เล็กถือว่าต่างกัน
+        * มักใช้ตัวพิมพ์ใหญ่ทั้งหมดในการนิยาม symbolic constant เช่น #define CONST_INT 20
+        * ห้ามตั้งซ้ำกับ keyword ใน c เช่น if, else, int 
+    
+    2) การตั้งชื่อตัวแปร
+
+        ควรคำนึงถึงการอ่านแล้วสามารถเข้าใจได้ว่าตัวแปรนี้ใช้ทำอะไร
+
+        ตัวอย่างที่ถูกต้อง :
+        hour , _data, student_id, studentName, data01
+        
+        ตัวอย่างที่ผิด :
+        0Name, 007abc
+
+2. ประเภทข้อมูลและขนาด
+    
+    ข้อมูลที่เก็บเลขจำนวนเต็ม
+        char    1 byte
+        int     4 byte
+        float   4 byte
+        double  8 byte
+    
+    keyword short, long
+        short int   2 byte
+        long int    8 byte
+    
+    keyword signed
+        unsigned int จะเก็บค่าเฉพาะจำนวนเต็มบวก
+    
+    sizeof
+        เป็น macro ใช้ตรวจสอบขนาดตัวแปร
+    
+    C standards 
+        บางอันจะใช้จำนวนหน่วยความจำในการจัดเก็บไม่เท่ากับที่เราใช้งานกัน 
+        เช่น int ของ C standards บางตัวไม่ได้เก็บ int 4 byte (แต่ส่วนใหญ่จะเป็น 4 byte)
+
+3. ค่าคงที่ (Constants)
+
+    ค่าคงที่จำนวนเต็ม
+        an integer constant      ex. 1112
+        a long constant          ex. 123456789L (ตัวเลขตามด้วย l or L)
+        unsigned constants       ex. 1112U (ตัวเลขตามด้วย u or U)
+        unsigned long constants  ex. 123456789UL (ตัวเลขตามด้วย ul or UL)
+
+    ค่าคงที่จำนวนจริง
+        floating-point constants ex. 123.4 or 1e-2
+        double constants         ex. 123456.7899L (ตัวเลขตามด้วย l or L)
+    
+    ค่าคงที่ของเลขฐาน 2, 8 และ 16
+        เลขฐาน  2                 ex. 0b123  (0b or 0B ตามด้วยตัวเลข)
+        เลขฐาน  8                 ex. 0123   (0 ตามด้วยตัวเลข)
+        เลขฐาน 16                 ex. 0x123  (0x or 0X ตามด้วยตัวเลข)
+
+    printf(print format) for octal and hexadecimal
+        octal           %o
+        hexadecimal     %x  (use %X for print A-F uppercase)
+    
+    ค่าคงที่ตัวอักษร (Character Constant)
+        ex. 'a', '1', 'D'
+        ตัวอักขระ ASCII และ integer สามารถแปลงไปมาได้
+
+        escape sequences
+        \a      aler(bell) haracter
+        \b      backspace
+        \f      formfeed
+        \n      newline
+        \r      carriage return
+        \t      horizontal tab
+        \v      vertical tab
+        \\      backslash
+        \?      question mark
+        \'      single quote
+        \"      double quote
+        \ooo    octal number
+        \xhh    hexadecimal number
+
+    ค่าคงที่สตริง (String Constant)
+        ex. "This is a string constant." , "" (empty string)
+    
+4. การประกาศตัวแปร (Variable Declarations) 
+    ตัวแปรภาษา c ต้องถูกประกาศก่อนถูกใช้งาน
+    
+    1) printf() and puts()
+        #include <stdio.h>
+        int printf(const char *format, ...);
+        int puts(const char *s);
+
+        format for printf()
+        %d / %i             print as decimal integer
+        %6d                 print as decimal integer, at least 6 Character wide
+        %06d                print as decimal integer, at least 6 Character wide with 0 paddint
+        %f                  print as floating point
+        %.2f                print as floating print, 2 Characters after decimal point
+        %6f                 print as floating point, at least 6 Character wide
+        %6.2f               print as floating point, at least 6 Character wide and 2 after decimal point
+
+        other format
+        %o                  for octal
+        %x                  for hexadecimal
+        %c                  for Character
+        %s                  for Character string
+        %%                  for % itself.
+    
+    2) Character Input and Output
+        #include <stdio.h>
+        int getchar(void);
+        int putchar(int c);
+
+        c = getchar() 
+            รับอักขระ 1 ตัวจาก stdin เข้ามาในโปรแกรมแล้วกำหนดค่าให้ตัวแปร c
+
+        putchar(c) 
+            ส่งอักขระใน c ออกไปที่ stdout
+        
+        ตัวอย่างการประกาศและใช้งาน getchar(), putchar() 
+            char c;
+            c = getchar();
+            c = c + 1;
+            putchar(c);
+        * EOF เป็นค่าคงที่ที่ถูกกำหนด ไว้ใน stdio.h ซึ่งบอกถึง end-of-file or จุดสิ้นสุดข้อมูล
+        * getchar() ส่งค่ากลับเป็น EOF เมื่ออักขระที่ส่งเข้ามาในโปรแกรมหมดแล้ว
+
+    3) Expressions (นิพจน์)
+        นิพจน์จะอยู่ในรูปของการรวมกันของสัญลักษณ์และเครื่องหมายเพื่อให้อ้างถึงค่าได้ ซึ่งปกติแล้วจะประกอบด้วยอย่างน้อย
+        1 operators และอย่างน้อย 1 operand แต่นิพจน์อยู่ในรูปค่าคงที่ได้
+        * ตามหลักแล้วควรสามารถถูกหาค่าให้ได้ค่าออกมาได้
+
+5. Arithmetic Operators (ตัวดำเนินการทางคณิตศาสตร์)
+    ประกอบด้วย +, -, *, /, % (% ใช้ได้กับ int เท่านั้น)
+
+    ex. 5 + 5 = 10, 9/6 = 1
+
+    เรียง precedence จากมากไปน้อย : (* / %) , (+ -)
+    หาก operator มี precedence เท่ากันจะดำเนินการจากซ้ายไปขวาหรือขวาไปซ้ายตามตาราง precedence operator
+
+6. Relational Operators and Logical Operators
+    Relational Operators
+        >, >=, <, <=, ==, !=
+
+    Logical Operators
+        &&, ||, !
+
+    1) Comma Operator
+        ใช้สำหรับเขียน 1 คำสั่งที่ประกอบด้วยนิพจน์ที่มากกว่า 1
+
+        ex. if (condition) a = 1, printf("Hello"), b = 2;
+    
+    2) Array Introduction
+        เป็นตัวแปรใช้เก็บข้อมูลมากกว่า 1 ตัว ใน 1 ตัวแปร ที่เป็น "ตัวแปรประเภทเดียวกัน"
+
+        ex. int[10] จะเก็บข้อมูล a[0] ถึง a[9] โดย 10 ใน int[10] เป็นขนาดของ array
+
+7.Type Conversion
+    เมื่อนำค่าข้อมูลประเภทต่างๆมาใช้ผ่าน operator ร่วมกัน complier จะแปลงให้เหมาะสมโดยแปลงจาก narrow ไปยัง wider
+
+    float ไม่สามารถใช้เป็น subscript ใน array ได้
+
+    Character <---> value integer (แปลงตามค่าตาราง ASCII)
+    logic     <---> number
+    false      ---> 0
+    true       ---> 1
+    false       =   0
+    true       !=   0
+
+    Explicit Type Conversion or Type Casting ทำได้โดยใช้ expressions 
+        ex. printf("%d\n", (int)2.5);
+
+    * สามารถเขียน if(!valid) แทน if(valid == 0) ได้
+
+8. Increment and Decrement Operators
+    n++, ++n
+        n++ จะนำค่าไปใช้ก่อนค่อยบวก ส่วน ++n จะบวกก่อนค่อยนำค่าไปใช้
+
+9. Bitwise Operators
+    & AND 
+        ex. 1 & 1 = 1
+
+    | OR (inclusive OR)
+        ex. 0 | 0 = 0
+    
+    ^ XOR (exclusive OR)
+        2ข้าง เหมือนกัน = 0
+    
+    << left shift , >> right shift
+        ex.
+        5 = 0101
+        5 << 2 => 010100 (0101ต่อ00)
+        5 >> 2 => 01     (00ต่อ01)
+
+10. Assignment Operators
+    c = getchar() and c = d = getchar()
+    i = i + 2  ==> i += 2
+    x = x op y ==> x op= y  โดย op {+, -, *, /, %, <<, >>, &, |, ^}
+    x *= y + 1 ==> x = x * (y + 1)
+
+11. Conditional Expression
+    format : expr1 ? expr2 : expr3
+
+    ex. 
+        printf("I bought %d book%s\n", n, n == 1 ? "" : "s");
+        โดยจากตัวอย่างจะเช็คว่า n = 1 หรือไม่
+        ถ้าใช่ : I bought (ค่าn) book
+        ถ้าไม่ : I bought (ค่าn) books
